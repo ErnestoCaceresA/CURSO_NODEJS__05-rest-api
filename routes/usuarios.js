@@ -2,6 +2,8 @@ const {
     Router
 } = require('express');
 
+const { check } = require('express-validator');
+
 // controladores
 const {
     usuariosGet,
@@ -22,7 +24,9 @@ router.get('/', usuariosGet)
 router.put('/:id', usuariosPut) //ASI SI MANDAN LOS PARAMETROS PARA PONER EN LA DIRECCION usuarios/10 o cualquier numero de id
 
 // ENDOPOINT POST
-router.post('/', usuariosPost)
+router.post('/', [
+    check('correo', 'El correo no es valido').isEmail(), //middleware de express-validator paquete para validar el correo electronico
+] ,usuariosPost)
 
 // ENDPOINT PATCH
 router.patch('/', usuariosPatch)
