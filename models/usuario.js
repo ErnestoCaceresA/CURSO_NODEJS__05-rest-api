@@ -47,6 +47,12 @@ const UsuarioSchema = Schema({
     }
 });
 
+UsuarioSchema.methods.toJSON = function(){
+    //basicamente para no mostrar el __v y el password del usuario a la hora de registrarse unicamente guardarlos
+    const { __v, password, ...usuario } = this.toObject();
+    return usuario
+}
+
 
 //model (se importa de mongoose) para exportar el Schema model( '<nombre para darle a la coleccion>', < nombre del Schema que creamos >)
 
