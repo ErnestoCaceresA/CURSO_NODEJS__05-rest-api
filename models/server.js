@@ -10,6 +10,7 @@ class Server {
         this.app = express();
         this.port = process.env.PORT;
         this.usuariosPath = '/api/usuarios';
+        this.authPath = '/api/auth';
 
         //funciones que se van a ejecutar justo cuando se llama al constructor de este objeto: =>
 
@@ -43,7 +44,11 @@ class Server {
     routes() {
         // // PETICIONES HTTP:
 
-       this.app.use(this.usuariosPath, require('../routes/usuarios')); //ruta: /api/usuarios
+        // localhost:3000/api/usuarios
+       this.app.use(this.usuariosPath, require('../routes/usuarios'));
+
+        // localhost:3000/api/auth
+        this.app.use(this.authPath, require('../routes/auth'));
     }
 
     listen() {

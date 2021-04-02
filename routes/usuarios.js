@@ -1,10 +1,12 @@
 const {
     Router
 } = require('express');
-
 const { check } = require('express-validator');
 const { esRoleValido, emailExiste, existeUsuarioPorId } = require('../helpers/db-validators');
+
+//middlewares
 const { validarCampos } = require('../middlewares/validar-campos');
+const { validatJWT } = require('../middlewares/validar-jwt')
 
 // controladores
 const {
@@ -14,8 +16,6 @@ const {
     usuariosPatch,
     usuariosDelete
 } = require('../controllers/usuarios');
-
-
 
 
 
@@ -54,6 +54,7 @@ router.patch('/', usuariosPatch)
 
 // ENDPOINT DELETE
 router.delete('/:id', [
+    validatJWT, //SE PONE AL PRINCIPIO PORQUE SI TODO ESTA BIEN Y DA "NEXT" CONTINUA CON LO SIGUIENTE PERO SI DA ERROR NO EJECUTA NADA DE LO QUE ESTA DESPUES, Y PUES ANTES DE HACER LO DE MAS HAY QUE VALIDAR SI TIENE UN TOKEN VALIDO
     check('id', "No es un ID valido").isMongoId(),
     check('id').custom( id=> existeUsuarioPorId(id) ), //validator personalizado
     validarCampos

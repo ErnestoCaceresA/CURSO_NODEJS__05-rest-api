@@ -49,7 +49,8 @@ const UsuarioSchema = Schema({
 
 UsuarioSchema.methods.toJSON = function(){
     //basicamente para no mostrar el __v y el password del usuario a la hora de registrarse unicamente guardarlos
-    const { __v, password, ...usuario } = this.toObject();
+    const { __v, password, _id , ...usuario } = this.toObject();
+    usuario.uid = _id; //agregar un atributo llamado uid donde tiene el valor de _id que da en automatico mongodb
     return usuario
 }
 

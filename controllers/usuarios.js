@@ -104,6 +104,7 @@ const usuariosDelete = async(req, res) => {
     //validaciones esta en routes
     const {id} = req.params;
 
+
     //FISICAMENTE LO BORRAMOS
     // const usuario = await Usuario.findByIdAndDelete( id );
 
