@@ -5,8 +5,15 @@ const { check } = require('express-validator');
 const { esRoleValido, emailExiste, existeUsuarioPorId } = require('../helpers/db-validators');
 
 //middlewares
-const { validarCampos } = require('../middlewares/validar-campos');
-const { validatJWT } = require('../middlewares/validar-jwt')
+const {
+    validarCampos,
+    validatJWT,
+    esAdminRole,
+    tieneRole
+} =  require('../middlewares/index')
+// const { validarCampos } = require('../middlewares/validar-campos');
+// const { validatJWT } = require('../middlewares/validar-jwt')
+// const { esAdminRole, tieneRole } = require('../middlewares/validar-roles');
 
 // controladores
 const {
@@ -54,7 +61,13 @@ router.patch('/', usuariosPatch)
 
 // ENDPOINT DELETE
 router.delete('/:id', [
+    //los siguientes dos middleware SON REUTILIZABLES SI PARA HACER CIERTA ACCION SE NECESITA VALIDAR EL TOKEN Y QUE TIENE QUE SER ADMIN
+    //----------------------------------------------------------------------------------------------------------------------------------
     validatJWT, //SE PONE AL PRINCIPIO PORQUE SI TODO ESTA BIEN Y DA "NEXT" CONTINUA CON LO SIGUIENTE PERO SI DA ERROR NO EJECUTA NADA DE LO QUE ESTA DESPUES, Y PUES ANTES DE HACER LO DE MAS HAY QUE VALIDAR SI TIENE UN TOKEN VALIDO
+    // esAdminRole, //fuerza a que el usuario sea ahuevo rol admin
+    // este otro middleware de "tieneRole" es mas flexible porque se le manda como argumento los roles que se requieren para que ejecute este servicio de borrar un usuario: 
+    tieneRole('ADMIN_ROLE', 'VENTAS_ROLE'), //tambien es un middleware solamente que es una funcion que recibe parametros que dentro retorna otra funcion que la funcion de adentro si es un middleware
+    //----------------------------------------------------------------------------------------------------------------------------------
     check('id', "No es un ID valido").isMongoId(),
     check('id').custom( id=> existeUsuarioPorId(id) ), //validator personalizado
     validarCampos

@@ -93,6 +93,7 @@ const usuariosPost = async(req, res) => { //se manda a traves de postman en un b
     })
 }
 
+// PATCH: namas es de prueba no hace nada
 const usuariosPatch = (req, res) => {
     res.json({ //se manda formato json
         ok: true,
@@ -100,6 +101,7 @@ const usuariosPatch = (req, res) => {
     })
 }
 
+// DELETE: para borrar un usuario de la base de datos pasandole el id
 const usuariosDelete = async(req, res) => {
     //validaciones esta en routes
     const {id} = req.params;
@@ -110,9 +112,13 @@ const usuariosDelete = async(req, res) => {
 
     //BORRARLO CAMBIANDO EL ESTADO DEL USUARIO DE TRUE A FALSE SIMULANDO QUE ESE USUARIO YA NO ESTA ACTIVO OSEA "BORRADO" pero sin perder su informacion
     const usuario = await Usuario.findByIdAndUpdate( id, {estado: false} );
+
+    // const usuarioAutenticado = req.usuario //nuevo atributo de el objeto req que se creao en el middleware validar-jwt.js
     
     res.json({ //se manda formato json
+        msg: `usuario ${usuario.nombre} borrado satisfactoriamente`,
         usuario
+        // usuarioAutenticado
     })
 }
 

@@ -2,7 +2,12 @@ const {
     validationResult
 } = require('express-validator');
 
-//un middleware es una funcion que se ejecuta antes de llamar ya sea a un controlador o seguir con la ejecucion de mis peticiones
+//------------------------------------------------------------------------------------------------------------------------------
+/*un middleware es una funcion que se ejecuta antes de llamar ya sea a un controlador o seguir con la ejecucion de mis peticiones,
+basicamente hace algo el middleware y despues de todo al final al ejecutar el next() ya continua con todo lo de mas que esta en el router, pero tambien se puede poner condiciones
+para que ni los controladores ni las peticioanes siguientes se ejecutan si el middleware con una validacion osea un if, que no se ejecute el "next()" si esta mal algo y asi no continua con la peticion del router
+*/
+//-------------------------------------------------------------------------------------------------------------------------------
 
 const validarCampos = (req, res, next) => { //next es lo que se tiene que llamar si este middleware pasa
     const errors = validationResult(req);
